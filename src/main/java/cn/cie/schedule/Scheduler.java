@@ -21,16 +21,20 @@ public class Scheduler {
 
     @Scheduled(fixedRate = 1000 * 60 * 3)
     public void delNotValidateUser() {
+        System.out.println("delNotValidateUser");
+
         userService.delNotValidateUser();
     }
 
-    @Scheduled(fixedRate = 1000 * 60 * 10)
+    @Scheduled(fixedRate = 1000 * 60)
     public void expireToken() {
+        System.out.println("expireToken");
         userService.expireToken();
     }
 
-    @Scheduled(fixedRate = 1000 * 60)
+    @Scheduled(fixedRate = 1000 * 6)
     public void cancelOrder() {
+        System.out.println("cancelOrder");
         orderService.autoCancelOrder();
     }
 

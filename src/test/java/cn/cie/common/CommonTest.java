@@ -67,7 +67,7 @@ public class CommonTest {
 
     @Test
     public void strlength() {
-        logger.info(String.valueOf(StringUtils.length("rojeralone")));
+        logger.info(String.valueOf(StringUtils.length("123456789")));
     }
 
     @Test

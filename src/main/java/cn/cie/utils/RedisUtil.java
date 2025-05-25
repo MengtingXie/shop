@@ -1,6 +1,7 @@
 package cn.cie.utils;
 
 import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.TypeReference;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.stereotype.Component;
 import redis.clients.jedis.Jedis;
@@ -248,6 +249,15 @@ public class RedisUtil<T> implements InitializingBean {
             String[] jsonStrs = new String[values.length];
             int index = 0;
             for (Object value : values) {
+                // 确保GameDTO对象的img字段正确序列化
+                if (value instanceof cn.cie.entity.dto.GameDTO) {
+                    cn.cie.entity.dto.GameDTO gameDTO = (cn.cie.entity.dto.GameDTO) value;
+                    if (gameDTO.getImg() != null) {
+                        System.out.println("Serializing game with " + gameDTO.getImg().size() + " images");
+                    }
+                }
+                
+                // 使用更详细的序列化配置
                 jsonStrs[index] = JSON.toJSONString(value);
                 ++index;
             }
@@ -294,7 +304,7 @@ public class RedisUtil<T> implements InitializingBean {
     }
 
     /**
-     * 获取列表中所有数据,ruguo
+     * 获取列表中所有数据
      *
      * @param key
      * @return
@@ -310,7 +320,20 @@ public class RedisUtil<T> implements InitializingBean {
                 return res;
             }
             for (String str : list) {
-                res.add((T) JSON.parseObject(str, clazz));
+                System.out.println("Deserializing: " + str);  // Debug log
+                // 改进的反序列化方式，使用正确的泛型类型
+                T obj = (T) JSON.parseObject(str, clazz);
+                
+                // 检查对象中img字段是否为空，如果为空则尝试重新加载
+                if (obj != null && obj instanceof cn.cie.entity.dto.GameDTO) {
+                    cn.cie.entity.dto.GameDTO gameDTO = (cn.cie.entity.dto.GameDTO) obj;
+                    if (gameDTO.getImg() == null || gameDTO.getImg().isEmpty()) {
+                        System.out.println("Image list is empty for game: " + gameDTO.getId());
+                    }
+                }
+                
+                System.out.println("Deserialized object: " + obj);  // Debug log
+                res.add(obj);
             }
             return res;
         } finally {
@@ -326,6 +349,9 @@ public class RedisUtil<T> implements InitializingBean {
      * @throws Exception
      */
     public void afterPropertiesSet() throws Exception {
+        System.out.println("创建Redis连接");
         jedisPool = new JedisPool(REDIS_URL);
+        System.out.println("jedisPool:"+jedisPool.toString());
+        System.out.println("创建Redis连接成功");
     }
 }

@@ -122,4 +122,27 @@ public class GameDTO {
     public List<String> getImg() {
         return img;
     }
+    
+    public void setImg(List<String> img) {
+        this.img = img;
+    }
+
+    @Override
+    public String toString() {
+        return "GameDTO{" +
+                "id=" + id +
+                ", creater='" + creater + '\'' +
+                ", name='" + name + '\'' +
+                ", desc='" + desc + '\'' +
+                ", systemcfg='" + systemcfg + '\'' +
+                ", price=" + price +
+                ", discount=" + discount +
+                ", ctime=" + ctime +
+                ", utime=" + utime +
+                ", stat=" + stat +
+                ", kinds=" + kinds +
+                ", tags=" + tags +
+                ", img=" + img +
+                '}';
+    }
 }

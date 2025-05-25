@@ -23,3 +23,4 @@ public class SendFindPwdMailHandler implements EventHandler {
         return Arrays.asList(EventType.SEND_FIND_PWD_EMAIL);
     }
 }
+

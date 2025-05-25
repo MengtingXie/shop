@@ -54,6 +54,19 @@ public class EventConsumer implements InitializingBean, ApplicationContextAware,
                 }
             }
         }
+        for (Map.Entry<EventType, List<EventHandler>> entry : handlers.entrySet()) {
+            System.out.println("handleer");
+            EventType eventType = entry.getKey();
+            List<EventHandler> eventHandlers = entry.getValue();
+            System.out.println(eventType.getValue());
+            for (int i = 0; i <eventHandlers.size() ; i++) {
+                EventHandler eventHandler = eventHandlers.get(i);
+                System.out.println(eventHandler.getClass().getSimpleName());
+                System.out.println(eventHandler.getSupportEvent().get(0).getValue());
+            }
+            // 遍历所有的 hander ，将 event-handler 的映射加入 handlers 中
+
+        }
         // 设置线程池的大小为 CPU 的核数 * 2
         threadPool = (ThreadPoolExecutor) Executors.newFixedThreadPool(Runtime.getRuntime().availableProcessors() + 2);
         new Thread(new Runnable() {

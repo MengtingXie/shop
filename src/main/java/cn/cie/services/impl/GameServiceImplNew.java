@@ -17,9 +17,10 @@ import java.util.*;
 
 /**
  * Created by lh2 on 2023/6/8.
+ * Fixed by Copilot on 2023/5/25.
  */
 @Service
-public class GameServiceImpl implements GameService {
+public class GameServiceImplNew implements GameService {
 
     @Autowired
     private GameMapper gameMapper;
@@ -95,9 +96,9 @@ public class GameServiceImpl implements GameService {
                 while (numSet.size() < 5) {
                     numSet.add(random.nextInt(count));
                 }
-                Iterator i = numSet.iterator();
+                Iterator<Integer> i = numSet.iterator();
                 while (i.hasNext()) {
-                    games.add(allgames.get((Integer) i.next()));
+                    games.add(allgames.get(i.next()));
                 }
             } else {
                 games = allgames;
